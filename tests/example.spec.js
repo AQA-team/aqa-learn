@@ -1,19 +1,14 @@
-// @ts-check
 import { test, expect } from '@playwright/test';
+import { HomePage } from '../pages/components/homePage';
+import { RegisterPage } from '../pages/components/registerPage';
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test ('register -> card payment check', async ({page}) => {
+    
+  const homePage = new HomePage(page);
+  const registerPage = new RegisterPage(page);
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
-});
+  await homePage.startRegister();
+  await registerPage.registration(fullName, email, password);
+  expect(registerPage.registerStatus).toHaveText('Registration successful!');
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
-
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
-
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
-});
+})
