@@ -1,14 +1,15 @@
-import {Locator, Page} from '@playwright/test'
+import {test, page} from '@playwright/test'
 
 export class HomePage {
 
     constructor(page) {
         this.page = page;
-        this.loginBtn = page.Locator('//*[@id="login-btn"]');
-        this.registerBtn = page.Locator('//*[@id="register-btn"]');
-        this.cart = page.Locator('//*[@id="cart-icon"]');
-        this.userName = page.Locator('//*[@id="user-display-name"]');
-        this.addButton = 'button:has-text("Add to Cart")';
+        this.loginBtn = page.locator('//*[@id="login-btn"]');
+        this.registerBtn = page.locator('//*[@id="register-btn"]');
+        this.cart = page.locator('//*[@id="cart-icon"]');
+        this.userName = page.locator('//*[@id="user-display-name"]');
+        this.addButton = page.locator('//*[@class="add-to-cart"]').first();
+        this.checkoutBtn = page.locator('//*[@id="checkout-btn"]');
     } 
 
     async open() {
@@ -21,5 +22,13 @@ export class HomePage {
 
     async startLogin() {
         await this.loginBtn.click();
+    }
+
+    async addToCart() {
+        await this.addButton.click();
+    }
+
+    async openCart() {
+        await this.cart.click();
     }
 }
