@@ -1,6 +1,6 @@
 import {test, page} from '@playwright/test'
 
-export class HomePage {
+export class MainPage {
 
     constructor(page) {
         this.page = page;
