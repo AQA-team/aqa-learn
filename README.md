@@ -3,9 +3,9 @@ Check this information before making pull requests and merging. We should stay i
 If you unsure about name or where should be placed file just ask others for help to keep everyone notified about agreements.
 
 # Architecture
-**/pages** - in this directory we are storing our POM classes for pages(like Main Page and Menu Planner) 
-**/pages/components** - in this directory we are storing elements that appear on every page(or at least most ones). It is elements such as cart sidebar, login/authorization pop-ups, header, footer, etc.
-**/tests** - here we are storing all tests. Since we couldn't find any API of the server we will store everything here(as I noticed everything what possibly could provide request to the server is simply stored in localStorage)
+ 1. **/pages** - in this directory we are storing our POM classes for pages(like Main Page and Menu Planner) 
+ 2. **/pages/components** - in this directory we are storing elements that appear on every page(or at least most ones). It is elements such as cart sidebar, login/authorization pop-ups, header, footer, etc.
+ 3. **/tests** - here we are storing all tests. Since we couldn't find any API of the server we will store everything here(as I noticed everything what possibly could provide request to the server is simply stored in localStorage)
 
 # Naming
  - Functions, methods, properties and variables should be named in camelCase(for example: inputList, addItem, etc.)
