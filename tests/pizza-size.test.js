@@ -1,6 +1,6 @@
 import { test, expect} from '@playwright/test';
 import { HomePage } from '../pages/components/homePage';
-import { PizzaPage } from '../pages/components/pizzaPage';
+import { PizzaPage } from '../pages/pizza.page';
 
 test.use({ ignoreHTTPSErrors: true });
 
