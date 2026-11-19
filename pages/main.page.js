@@ -1,6 +1,6 @@
 import {test, page} from '@playwright/test'
 
-export class HomePage {
+export class MainPage {
 
     constructor(page) {
         this.page = page;
@@ -14,21 +14,5 @@ export class HomePage {
 
     async open() {
         await this.page.goto('https://burgershop-stage.qa-academy.eu/index.php?');
-    }
-
-    async startRegister() {
-        await this.registerBtn.click();
-    }
-
-    async startLogin() {
-        await this.loginBtn.click();
-    }
-
-    async addToCart() {
-        await this.addButton.click();
-    }
-
-    async openCart() {
-        await this.cart.click();
     }
 }
