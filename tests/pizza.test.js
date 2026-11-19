@@ -1,18 +1,18 @@
 import { test, expect} from '@playwright/test';
-import { HomePage } from '../pages/components/homePage';
+import { MainPage } from '../pages/main.page';
 import { PizzaPage } from '../pages/pizza.page';
 
 test.use({ ignoreHTTPSErrors: true });
 
 test.describe('Pizza size button updates price and calories', () => {
-    let homePage;
+    let mainPage;
     let pizzaPage;
 
     test.beforeEach(async ({ page }) => {
-        homePage = new HomePage(page);
+        mainPage = new MainPage(page);
         pizzaPage = new PizzaPage(page);
 
-        await homePage.open();
+        await mainPage.open();
         await pizzaPage.openPizzaSection();
     });
     test('Margherita: Small is default, Medium and Large update price and calories', async () => {
