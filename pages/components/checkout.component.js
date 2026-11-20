@@ -4,7 +4,6 @@ export class CheckoutComponent {
 
     constructor(page) {
         this.page = page;
-        this.checkoutBtn = page.locator('//*[@id="checkout-btn"]');
         this.nameField = page.locator('//*[@id="name"]');
         this.phoneField = page.locator('//*[@id="phone"]');
         this.addressField = page.locator('//*[@id="address"]');

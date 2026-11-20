@@ -30,7 +30,7 @@ test.describe('Card Payment', () => {
     await loginComponent.login();
     });
   
-  test('Card payment', async ({ page }) => {
+  test('Card payment', async () => {
     await mainPage.addToCart();
     await cartComponent.openCheckout();
     await checkoutComponent.checkout();

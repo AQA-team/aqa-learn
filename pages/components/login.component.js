@@ -5,7 +5,7 @@ export class LoginComponent {
     constructor(page) {
         this.page = page;
         this.emailField = page.locator('//*[@id="login-email"]');
-        this.passwordField = page.locator('//*[@id="login-password"]')
+        this.passwordField = page.locator('//*[@id="login-password"]');
         this.loginBtn = page.locator('//*[@id="login-submit"]');
         this.loginStatus = page.locator('//*[@id="login-status"]');
         this.authContainer = page.locator('//*[@class="auth-container"]');

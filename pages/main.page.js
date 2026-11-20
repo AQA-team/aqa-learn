@@ -1,19 +1,15 @@
 import {test, page} from '@playwright/test'
+import {BasePage} from './base.page.js'
 
-export class MainPage {
+export class MainPage extends BasePage {
 
     constructor(page) {
-        this.page = page;
-        this.loginBtn = page.locator('//*[@id="login-btn"]');
-        this.registerBtn = page.locator('//*[@id="register-btn"]');
-        this.cart = page.locator('//*[@id="cart-icon"]');
-        this.userName = page.locator('//*[@id="user-display-name"]');
+        super(page);
         this.addButton = page.locator('//*[@class="add-to-cart"]').first();
-        this.checkoutBtn = page.locator('//*[@id="checkout-btn"]');
     } 
 
     async open() {
-        await this.page.goto('https://burgershop-stage.qa-academy.eu/index.php?');
+        await this.page.goto('');
     }
 
     async startRegister() {
