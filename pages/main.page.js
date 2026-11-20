@@ -1,4 +1,3 @@
-import {test, page} from '@playwright/test'
 import {BasePage} from './base.page.js'
 
 export class MainPage extends BasePage {

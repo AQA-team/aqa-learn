@@ -1,5 +1,3 @@
-import {test, page} from '@playwright/test'
-
 export class RegisterComponent {
 
     constructor(page) {
