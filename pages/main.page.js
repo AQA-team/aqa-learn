@@ -1,12 +1,12 @@
-import {test, page} from '@playwright/test'
+import { BasePage } from "./base.page";
 
-export class MainPage {
+export class MainPage extends BasePage {
+  constructor(page) {
+    super(page);
+    this.pizzaSectionBtn = page.locator('a[href="/pages/pizza.php"]');
+  }
 
-    constructor(page) {
-        this.page = page;
-    } 
-
-    async open() {
-        await this.page.goto('https://burgershop-stage.qa-academy.eu/index.php?');
-    }
+  async openPizzaSection() {
+    await this.pizzaSectionBtn.click();
+  }
 }
