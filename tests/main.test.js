@@ -1,12 +1,9 @@
 import { test, expect } from "@playwright/test";
 import { MainPage } from "../pages/main.page.js";
-import { CartComponent } from "../pages/components/cart.component.js";
-
-test.use({ ignoreHTTPSErrors: true });
 
 test("Add a single item to the cart", async ({ page }) => {
   const mainPage = new MainPage(page);
-  const cart = new CartComponent(page);
+  const cart = mainPage.cartComponent;
 
   await mainPage.open();
   await expect(mainPage.cartCounter).toHaveText("0");
@@ -16,11 +13,13 @@ test("Add a single item to the cart", async ({ page }) => {
 
   await test.step("1. Add item to the cart", async () => {
     await mainPage.addToCart(firstCard);
+
     await expect(mainPage.cartCounter).toHaveText("1");
   });
 
   await test.step("2. Open the cart", async () => {
     await mainPage.openCart();
+
     await expect(cart.cartItems).toHaveCount(1);
   });
 
