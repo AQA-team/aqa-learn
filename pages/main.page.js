@@ -1,28 +1,29 @@
-import { CartComponent } from './components/cart.component.js';
+import { BasePage } from './base.page.js';
 
-export class MainPage{
-  constructor(page){
-    this.page=page;
-    this.productList= page.locator('div.container.products-container > .row > .col-md-4');
-    this.cart= new CartComponent(page);
+export class MainPage extends BasePage {
+  constructor(page) {
+    super(page);
+    this.productList = page.locator(
+      'div.container.products-container > .row > .col-md-4'
+    );
   }
 
   async addItemToTheCart(itemIndex) {
-    if (this.cart.opened) {
-    await this.cart.clickCartIcon();
-    this.cart.opened = false;
+    if (this.cartComponent.opened) {
+      await this.cartComponent.clickCartIcon();
+      this.cartComponent.opened = false;
     }
 
     const productCard = this.productList.nth(itemIndex);
-    const itemButton = productCard.locator("button.add-to-cart");
-    const productName= await productCard.locator('button.add-to-cart').getAttribute('data-name');
-    const calories= await productCard.locator('button.add-to-cart').getAttribute('data-calories');
+    const itemButton = productCard.locator('button.add-to-cart');
+    const productName = await productCard
+      .locator('button.add-to-cart')
+      .getAttribute('data-name');
+    const calories = await productCard
+      .locator('button.add-to-cart')
+      .getAttribute('data-calories');
     await itemButton.click();
-    this.cart.opened = true;
+    this.cartComponent.opened = true;
     return { name: productName, calories: +calories };
-  }
-
-  async openPage(){
-    await this.page.goto("https://burgershop-stage.qa-academy.eu/index.php");
   }
 }
