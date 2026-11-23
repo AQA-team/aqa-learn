@@ -1,17 +1,17 @@
+import { CartComponent } from './components/cart.component.js';
+
 export class BasePage {
-    url = '';
+  constructor(page) {
+    this.page = page;
+    this.loginBtn = page.locator('//*[@id="login-btn"]');
+    this.registerBtn = page.locator('//*[@id="register-btn"]');
+    this.cart = page.locator('//*[@id="cart-icon"]');
+    this.userName = page.locator('//*[@id="user-display-name"]');
 
-    constructor(page) {
-        this.page = page;
-        this.loginBtn = page.locator('//*[@id="login-btn"]');
-        this.registerBtn = page.locator('//*[@id="register-btn"]');
-        this.cart = page.locator('//*[@id="cart-icon"]');
-        this.userName = page.locator('//*[@id="user-display-name"]');
+    this.cartComponent = new CartComponent(page);
+  }
 
-    }
-
-    async open(url = this.url) {
-        await this.page.goto(url);
-    }
-
+  async openPage(path = '/') {
+    await this.page.goto(path);
+  }
 }
