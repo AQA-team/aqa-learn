@@ -21,7 +21,7 @@ test.describe('Card Payment', () => {
     checkoutComponent = new CheckoutComponent(page);
     registerComponent = new RegisterComponent(page);
     
-    await mainPage.open();
+    await mainPage.openPage();
     await mainPage.startRegister();
     await registerComponent.registration();
     await expect(registerComponent.registerStatus).toHaveText('Registration successful!');
