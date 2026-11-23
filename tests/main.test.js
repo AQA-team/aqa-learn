@@ -5,8 +5,6 @@ import { CartComponent } from '../pages/components/cart.component';
 import { CheckoutComponent } from '../pages/components/checkout.component';
 import { RegisterComponent } from '../pages/components/register.component';
 
-test.use({ ignoreHTTPSErrors: true });
-
 test.describe('Card Payment', () => {
 
   let mainPage;
@@ -22,7 +20,7 @@ test.describe('Card Payment', () => {
     cartComponent = new CartComponent(page);
     checkoutComponent = new CheckoutComponent(page);
     registerComponent = new RegisterComponent(page);
-
+    
     await mainPage.open();
     await mainPage.startRegister();
     await registerComponent.registration();

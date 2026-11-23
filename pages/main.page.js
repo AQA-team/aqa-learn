@@ -1,4 +1,4 @@
-import {BasePage} from './base.page.js'
+import { BasePage } from './base.page.js'
 
 export class MainPage extends BasePage {
 
@@ -6,10 +6,6 @@ export class MainPage extends BasePage {
         super(page);
         this.addButton = page.locator('//*[@class="add-to-cart"]').first();
     } 
-
-    async open() {
-        await this.page.goto('');
-    }
 
     async startRegister() {
         await this.registerBtn.click();
