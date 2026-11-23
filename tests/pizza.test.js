@@ -2,8 +2,6 @@ import { test, expect } from "@playwright/test";
 import { MainPage } from "../pages/main.page";
 import { PizzaPage } from "../pages/pizza.page";
 
-test.use({ ignoreHTTPSErrors: true });
-
 test.describe("Pizza size button updates price and calories", () => {
   let mainPage;
   let pizzaPage;
