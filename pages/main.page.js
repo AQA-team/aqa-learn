@@ -6,6 +6,24 @@ export class MainPage extends BasePage {
     this.productList = page.locator(
       'div.container.products-container > .row > .col-md-4'
     );
+  
+    this.addButton = page.locator('//*[@class="add-to-cart"]').first();
+  } 
+
+    async startRegister() {
+      await this.registerBtn.click();
+  }
+
+  async startLogin() {
+      await this.loginBtn.click();
+  }
+
+  async addToCart() {
+      await this.addButton.click();
+  }
+
+  async openCart() {
+      await this.cart.click();
   }
 
   async addItemToTheCart(itemIndex) {
