@@ -26,9 +26,13 @@ export default defineConfig({
   reporter: [["line"], ["allure-playwright"]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    baseURL: "https://burgershop-stage.qa-academy.eu/index.php",
+    /* Base URL to use in actions like `await page.goto('')`. */
+
+    baseURL: 'https://burgershop-stage.qa-academy.eu',
     ignoreHTTPSErrors: true,
-    trace: "on-first-retry",
+
+    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    trace: 'on-first-retry',
   },
 
   /* Configure projects for major browsers */
