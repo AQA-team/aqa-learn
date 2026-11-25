@@ -28,7 +28,7 @@ test.describe('Card Payment', () => {
     await loginComponent.login();
   });
 
-  test('Card payment', async () => {
+  test('Card payment', { tag: ['@BS-11'] }, async () => {
     await mainPage.addToCart();
     await cartComponent.openCheckout();
     await checkoutComponent.checkout();
@@ -37,7 +37,7 @@ test.describe('Card Payment', () => {
 });
 
 test.describe('UI-tests for BurgerShop', { tag: ['@ui'] }, () => {
-  test('Verify correctness of kcal calculation of the order', async ({
+  test('Verify correctness of kcal calculation of the order', { tag: ['@BS-7'] }, async ({
     page,
   }) => {
     const mainPage = new MainPage(page);
@@ -57,7 +57,7 @@ test.describe('UI-tests for BurgerShop', { tag: ['@ui'] }, () => {
     );
   });
 
-  test('Add a single item to the cart', async ({ page }) => {
+  test('Add a single item to the cart', { tag: ['@BS-1'] }, async ({ page }) => {
     const mainPage = new MainPage(page);
     const cart = mainPage.cartComponent;
 
