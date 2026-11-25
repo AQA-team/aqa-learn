@@ -10,7 +10,7 @@ test.describe("Pizza size button updates price and calories", () => {
     mainPage = new MainPage(page);
     pizzaPage = new PizzaPage(page);
 
-    await mainPage.open();
+    await mainPage.openPage();
     await mainPage.openPizzaSection();
   });
   test("Margherita: Small is default, Medium and Large update price and calories", async () => {

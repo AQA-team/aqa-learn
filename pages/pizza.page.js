@@ -1,4 +1,4 @@
-import { BasePage } from "./base.page";
+import { BasePage } from './base.page.js';
 
 export class PizzaPage extends BasePage {
   constructor(page) {
@@ -6,8 +6,8 @@ export class PizzaPage extends BasePage {
 
     // Margherita Pizza сard
     this.margheritaCard = page
-      .locator(".burger-body")
-      .filter({ hasText: "Margherita" });
+      .locator('.burger-body')
+      .filter({ hasText: 'Margherita' });
 
     // Size buttons inside the Margherita card
     this.smallBtn = this.margheritaCard.locator('[data-size="small"]');
@@ -15,8 +15,8 @@ export class PizzaPage extends BasePage {
     this.largeBtn = this.margheritaCard.locator('[data-size="large"]');
 
     // The price and calories are inside the Margherita card
-    this.price = this.margheritaCard.locator(".burger-price");
-    this.calories = this.margheritaCard.locator(".calorie-badge");
+    this.price = this.margheritaCard.locator('.burger-price');
+    this.calories = this.margheritaCard.locator('.calorie-badge');
   }
 
   async selectSmall() {
