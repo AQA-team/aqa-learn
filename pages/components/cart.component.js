@@ -1,3 +1,5 @@
+import { CheckoutComponent } from './checkout.component';
+
 export class CartComponent {
   constructor(page) {
     this.page = page;
@@ -8,6 +10,8 @@ export class CartComponent {
     this.caloriesBadge = page.locator('.calorie-badge');
     this.checkoutBtn = page.locator('//*[@id="checkout-btn"]');
     this.cartItems = page.locator('#cart-items .cart-item');
+    this.checkoutComponent = new CheckoutComponent(page);
+    this.cartCounter = page.locator('#cart-count');
   }
 
   async getCaloriesNearPrice() {

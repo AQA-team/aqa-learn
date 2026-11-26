@@ -1,6 +1,6 @@
-import js from "@eslint/js";
-import globals from "globals";
-import eslintConfigPrettier from "eslint-config-prettier";
+import js from '@eslint/js';
+import globals from 'globals';
+import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default [
   js.configs.recommended,
@@ -12,7 +12,7 @@ export default [
       },
     },
     rules: {
-      "no-unused-vars": "warn",
+      'no-unused-vars': 'warn',
     },
   },
   eslintConfigPrettier, // Обязательно в самом конце списка
