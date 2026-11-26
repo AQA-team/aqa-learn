@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { MainPage } from '../pages/main.page';
+import { qase } from 'playwright-qase-reporter';
 
 test.describe('Card Payment', () => {
   let mainPage;
@@ -15,20 +16,20 @@ test.describe('Card Payment', () => {
     await mainPage.loginComponent.login();
   });
 
-  test('Card payment', { tag: ['@payment'] }, async () => {
+  test( qase(11, 'Checking the card payment'), { tag: ['@payment'] }, async () => {
     await mainPage.addToCart();
     await mainPage.cartComponent.openCheckout();
     await mainPage.cartComponent.checkoutComponent.checkout();
     await expect(
       mainPage.cartComponent.checkoutComponent.orderModel
-    ).toBeHidden({ timeout: 5000 });
+    ).toBeHidden();
   });
 });
 
 test.describe('UI-tests for BurgerShop', { tag: ['@ui'] }, () => {
   let mainPage;
   test(
-    'Verify correctness of kcal calculation of the order',
+    qase(7, 'Verify correctness of kcal calculation of the order'),
     { tag: ['@calories'] },
     async ({ page }) => {
       mainPage = new MainPage(page);
@@ -50,7 +51,7 @@ test.describe('UI-tests for BurgerShop', { tag: ['@ui'] }, () => {
   );
 
   test(
-    'Add a single item to the cart',
+    qase(1, 'Add a single item to the cart'),
     { tag: ['@addingItem'] },
     async ({ page }) => {
       mainPage = new MainPage(page);

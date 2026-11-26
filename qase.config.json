@@ -1,0 +1,10 @@
+{
+  "mode": "testops",
+  "testops": {
+    "project": "BS",
+    "api": {
+      "token": "165a56a78783fb245ffd2ecae8dd185962cf820e63cdaa79b6ba3141e09fca68",
+      "host": "qase.io"
+    }
+  }
+}
