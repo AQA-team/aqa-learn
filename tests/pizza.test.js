@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { MainPage } from '../pages/main.page';
 import { PizzaPage } from '../pages/pizza.page';
+import { qase } from 'playwright-qase-reporter';
 
 test.describe('Pizza size button updates price and calories', () => {
   let mainPage;
@@ -13,10 +14,12 @@ test.describe('Pizza size button updates price and calories', () => {
     await mainPage.openPage();
     await mainPage.openPizzaSection();
   });
-  test(qase(15,
-    'Pizza size button updates price and calories'),
+
+  test(
+    'Pizza size button updates price and calories',
     { tag: ['@pizzaSize'] },
     async () => {
+      qase.id(15);
       // Check that the size buttons are visible and that Small is selected by default.
       await expect(pizzaPage.smallBtn).toBeVisible();
       await expect(pizzaPage.mediumBtn).toBeVisible();
