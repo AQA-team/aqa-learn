@@ -4,10 +4,15 @@ export class MainPage extends BasePage {
   constructor(page) {
     super(page);
 
+    this.pizzaSectionBtn = page.locator('a[href="/pages/pizza.php"]');
     this.productList = page.locator(
       'div.container.products-container > .row > .col-md-4'
     );
     this.addButton = page.locator('//*[@class="add-to-cart"]').first();
+  }
+
+  async openPizzaSection() {
+    await this.pizzaSectionBtn.click();
   }
 
   async addToCart() {
