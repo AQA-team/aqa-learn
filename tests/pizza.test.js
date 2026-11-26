@@ -13,8 +13,8 @@ test.describe('Pizza size button updates price and calories', () => {
     await mainPage.openPage();
     await mainPage.openPizzaSection();
   });
-  test(
-    'Margherita: Small is default, Medium and Large update price and calories',
+  test(qase(15,
+    'Pizza size button updates price and calories'),
     { tag: ['@pizzaSize'] },
     async () => {
       // Check that the size buttons are visible and that Small is selected by default.
