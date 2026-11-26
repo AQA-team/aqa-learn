@@ -5,6 +5,10 @@ import prettierConfig from 'eslint-config-prettier';
 
 export default [
   {
+    rules: {
+      'playwright/valid-title': 'off',
+    },
+
     ignores: [
       'allure-report/**',
       'test-results/**',

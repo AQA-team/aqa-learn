@@ -16,7 +16,8 @@ test.describe('Card Payment', () => {
     await mainPage.loginComponent.login();
   });
 
-  test( qase(11, 'Checking the card payment'), { tag: ['@payment'] }, async () => {
+  test('Checking the card payment', { tag: ['@payment'] }, async () => {
+    qase.id(11);
     await mainPage.addToCart();
     await mainPage.cartComponent.openCheckout();
     await mainPage.cartComponent.checkoutComponent.checkout();
@@ -28,10 +29,12 @@ test.describe('Card Payment', () => {
 
 test.describe('UI-tests for BurgerShop', { tag: ['@ui'] }, () => {
   let mainPage;
+
   test(
-    qase(7, 'Verify correctness of kcal calculation of the order'),
+    'Verify correctness of kcal calculation of the order',
     { tag: ['@calories'] },
     async ({ page }) => {
+      qase.id(7);
       mainPage = new MainPage(page);
       let totalCalories = 0;
       await mainPage.openPage();
@@ -41,19 +44,20 @@ test.describe('UI-tests for BurgerShop', { tag: ['@ui'] }, () => {
       totalCalories += item2.calories;
       const item3 = await mainPage.addItemToTheCart(2);
       totalCalories += item3.calories;
-      await expect(await mainPage.cartComponent.getCaloriesNearPrice()).toEqual(
+      expect(await mainPage.cartComponent.getCaloriesNearPrice()).toEqual(
         totalCalories
       );
-      await expect(await mainPage.cartComponent.getCaloriesBadge()).toEqual(
+      expect(await mainPage.cartComponent.getCaloriesBadge()).toEqual(
         await mainPage.cartComponent.getCaloriesNearPrice()
       );
     }
   );
 
   test(
-    qase(1, 'Add a single item to the cart'),
+    'Add a single item to the cart',
     { tag: ['@addingItem'] },
     async ({ page }) => {
+      qase.id(1);
       mainPage = new MainPage(page);
       const cart = mainPage.cartComponent;
 
