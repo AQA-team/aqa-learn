@@ -15,3 +15,4 @@ If you unsure about name or where should be placed file just ask others for help
 - Classes should be named in _PascalCase_(for example: MainPage, MenuPlannerPage, etc.)
 - files of classes and components should be named in the following way: _xxxx.page.js_ and _xxxx.component.js_(xxxx means the name of page/component)
 - files of tests should be named in the following way: _xxxx.test.js_(xxxx means on which exact page conducted test)
+- each test must have a unique tag in the format `tag: ["@..."]` (for example: `tag: ["@TC-01"]` or `tag: ["@smoke-login"]`).
