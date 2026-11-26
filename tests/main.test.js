@@ -27,6 +27,27 @@ test.describe('Card Payment', () => {
   });
 });
 
+test.describe('Login', () => {
+  let mainPage;
+
+  test.beforeEach('Authorization', async ({ page }) => {
+    mainPage = new MainPage(page);
+    await mainPage.openPage();
+    await mainPage.registerComponent.startRegister();
+    await mainPage.registerComponent.registration();
+    await expect(mainPage.registerComponent.registerStatus).toHaveText(
+      'Registration successful!'
+    );
+  });
+
+  test('Login', { tag: ['@login'] }, async ({ page }) => {
+    qase.id(8);
+    mainPage = new MainPage(page);
+    await mainPage.loginComponent.login();
+    await expect(mainPage.userName).toHaveText('Bogdan');
+  });
+});
+
 test.describe('UI-tests for BurgerShop', { tag: ['@ui'] }, () => {
   let mainPage;
 
