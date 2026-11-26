@@ -4,6 +4,20 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
+    inputs:
+      test:
+        description: 'Файл теста (например: tests/mainPage.test.js)'
+        required: false
+        default: ''
+      grep:
+        description: 'Тег или название (например: @BS-11 или @ui)'
+        required: false
+        default: ''
+      project:
+        description: 'Браузер (chromium, firefox, webkit или пусто для всех)'
+        required: false
+        default: 'chromium'
 jobs:
   test:
     timeout-minutes: 60
@@ -13,15 +27,31 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
+        cache: 'npm'
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      run: npx playwright test
+      env:
+        TEST_FILE: ${{ inputs.test }}
+        GREP_PATTERN: ${{ inputs.grep }}
+        PROJECT: ${{ inputs.project }}
+      run: |
+        ARGS=()
+        if [ -n "$TEST_FILE" ]; then
+          ARGS+=("$TEST_FILE")
+        fi
+        if [ -n "$GREP_PATTERN" ]; then
+          ARGS+=("-g" "$GREP_PATTERN")
+        fi
+        if [ -n "$PROJECT" ]; then
+          ARGS+=("--project=$PROJECT")
+        fi
+        npx playwright test "${ARGS[@]}"
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
-        name: playwright-report
-        path: playwright-report/
+        name: allure-results
+        path: allure-results/
         retention-days: 30

@@ -28,7 +28,7 @@ test.describe('Card Payment', () => {
     await loginComponent.login();
   });
 
-  test('Card payment', async () => {
+  test('Card payment', { tag: ['@payment'] }, async () => {
     await mainPage.addToCart();
     await cartComponent.openCheckout();
     await checkoutComponent.checkout();
@@ -57,7 +57,7 @@ test.describe('UI-tests for BurgerShop', { tag: ['@ui'] }, () => {
     );
   });
 
-  test('Add a single item to the cart', async ({ page }) => {
+  test('Add a single item to the cart', { tag: ['@addingItem'] }, async ({ page }) => {
     const mainPage = new MainPage(page);
     const cart = mainPage.cartComponent;
 
