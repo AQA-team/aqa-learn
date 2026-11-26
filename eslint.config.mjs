@@ -1,8 +1,18 @@
 import js from '@eslint/js';
 import globals from 'globals';
 import playwright from 'eslint-plugin-playwright';
+import prettierConfig from 'eslint-config-prettier';
 
 export default [
+  {
+    ignores: [
+      'allure-report/**',
+      'test-results/**',
+      'allure-results/**',
+      'node_modules/**',
+      '.github/**',
+    ],
+  },
   // Базовые правила для всего JavaScript-кода
   js.configs.recommended,
   {
@@ -29,4 +39,5 @@ export default [
       'playwright/no-page-pause': 'error',
     },
   },
+  prettierConfig,
 ];
