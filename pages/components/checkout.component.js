@@ -8,6 +8,11 @@ export class CheckoutComponent {
     this.deliveryRadioBtn = page.locator('//*[@id="cash"]');
     this.cardRadioBtn = page.locator('//*[@id="card"]');
     this.orderModel = page.locator('//*[@id="order-frame"]');
+    this.closeCheckoutBtn = page.locator('//*[@id="order-close"]');
+  }
+
+  async closeCheckout() {
+    await this.closeCheckoutBtn.click();
   }
 
   async checkout(info) {

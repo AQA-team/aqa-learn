@@ -13,9 +13,9 @@ export class LoginComponent {
     await this.loginBtn.click();
   }
 
-  async login(email = 'test@gmail.com', password = '123456') {
-    await this.emailField.fill(email);
-    await this.passwordField.fill(password);
+  async login(user) {
+    await this.emailField.fill(user.email);
+    await this.passwordField.fill(user.password);
     await this.loginSubmit.click();
   }
 }

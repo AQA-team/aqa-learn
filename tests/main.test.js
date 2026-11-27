@@ -1,20 +1,24 @@
 import { test, expect } from '@playwright/test';
 import { MainPage } from '../pages/main.page.js';
+import { UserFactory } from './factories/user.factory';
 import { qase } from 'playwright-qase-reporter';
 import CheckoutBuilder from './builders/checkoutBuilder.js';
 
 test.describe('Card Payment', () => {
   let mainPage;
+  let user;
 
   test.beforeEach('Authorization', async ({ page }) => {
     mainPage = new MainPage(page);
+    user = UserFactory.createUser();
+
     await mainPage.openPage();
     await mainPage.registerComponent.startRegister();
-    await mainPage.registerComponent.registration();
+    await mainPage.registerComponent.registration(user);
     await expect(mainPage.registerComponent.registerStatus).toHaveText(
       'Registration successful!'
     );
-    await mainPage.loginComponent.login();
+    await mainPage.loginComponent.login(user);
   });
 
   test('Checking the card payment', { tag: ['@paymentCard'] }, async () => {
@@ -28,8 +32,75 @@ test.describe('Card Payment', () => {
     ).toBeHidden();
   });
 
+  test('Close checkout page', { tag: ['@closeCheckout'] }, async () => {
+    qase.id(9);
+    await mainPage.addToCart();
+    await mainPage.cartComponent.openCheckout();
+    await mainPage.cartComponent.checkoutComponent.checkout();
+    await expect(
+      mainPage.cartComponent.checkoutComponent.closeCheckoutBtn
+    ).toHaveRole('button');
+    await mainPage.cartComponent.checkoutComponent.closeCheckout();
+    await expect(
+      mainPage.cartComponent.checkoutComponent.orderModel
+    ).toBeHidden();
+  });
+});
+
+test.describe('Login', () => {
+  let mainPage;
+  let user;
+  let wrongUser;
+
+  test.beforeEach('Registration', async ({ page }) => {
+    mainPage = new MainPage(page);
+    user = UserFactory.createUser(); // Генерируем пользователя для тестов логина
+
+    await mainPage.openPage();
+    await mainPage.registerComponent.startRegister();
+    await mainPage.registerComponent.registration(user); // Передаем user
+    await expect(mainPage.registerComponent.registerStatus).toHaveText(
+      'Registration successful!'
+    );
+  });
+
+  test('Login', { tag: ['@login'] }, async () => {
+    qase.id(8);
+    await mainPage.loginComponent.login(user);
+    await expect(mainPage.userName).toHaveText(user.fullName);
+  });
+
+  test(
+    'Login with invalid credentials',
+    { tag: ['@loginInvalid'] },
+    async () => {
+      qase.id(19);
+      wrongUser = UserFactory.createUserWithWrongPassword();
+      await mainPage.loginComponent.login(wrongUser);
+      await expect(mainPage.loginComponent.loginStatus).toHaveText(
+        'Invalid email or password'
+      );
+    }
+  );
+});
+
+test.describe('Registration', () => {
+  let mainPage;
+
+  test('Registration', { tag: ['@registration'] }, async ({ page }) => {
+    qase.id(10);
+    mainPage = new MainPage(page);
+    await mainPage.openPage();
+    await mainPage.registerComponent.startRegister();
+    await mainPage.registerComponent.registration();
+    await expect(mainPage.registerComponent.registerStatus).toHaveText(
+      'Registration successful!'
+    );
+  });
+
   test('Checkout empty cart', { tag: ['@emptyCheckout'] }, async ({ page }) => {
     qase.id(6);
+    mainPage = new MainPage(page);
     page.on('dialog', async (dialog) => {
       const message = dialog.message();
       await dialog.accept();
@@ -43,8 +114,9 @@ test.describe('Card Payment', () => {
   test(
     'Place an order for delivery items from the cart, payment on delivery',
     { tag: ['@paymentDelivery'] },
-    async () => {
+    async ({ page }) => {
       qase.id(3);
+      mainPage = new MainPage(page);
       let userInfo = new CheckoutBuilder()
         .withPaymentMethod('delivery')
         .build();
