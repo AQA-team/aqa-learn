@@ -5,6 +5,7 @@ export class MainPage extends BasePage {
     super(page);
 
     this.pizzaSectionBtn = page.locator('a[href="/pages/pizza.php"]');
+    this.saucesSectionBtn = page.locator('a[href="/pages/sauces.php"]');
     this.productList = page.locator(
       'div.container.products-container > .row > .col-md-4'
     );
@@ -13,6 +14,10 @@ export class MainPage extends BasePage {
 
   async openPizzaSection() {
     await this.pizzaSectionBtn.click();
+  }
+
+  async openSaucesSection() {
+    await this.saucesSectionBtn.click();
   }
 
   async addToCart() {

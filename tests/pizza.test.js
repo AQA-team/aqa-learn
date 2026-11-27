@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { MainPage } from '../pages/main.page';
-import { PizzaPage } from '../pages/pizza.page';
+import { MainPage } from '../pages/main.page.js';
+import { PizzaPage } from '../pages/pizza.page.js';
 import { qase } from 'playwright-qase-reporter';
 
 test.describe('Pizza size button updates price and calories', () => {
