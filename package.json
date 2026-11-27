@@ -1,5 +1,6 @@
 {
   "name": "your-project",
+  "type": "module",
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   },
@@ -14,6 +15,7 @@
   },
   "dependencies": {
     "eslint-plugin-playwright": "^2.12.2",
+    "faker-js": "^1.0.0",
     "playwright": "^1.65.0"
   },
   "devDependencies": {

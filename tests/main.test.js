@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { MainPage } from '../pages/main.page';
+import { MainPage } from '../pages/main.page.js';
 import { UserFactory } from './factories/user.factory';
 import { qase } from 'playwright-qase-reporter';
+import CheckoutBuilder from './builders/checkoutBuilder.js';
 
 test.describe('Card Payment', () => {
   let mainPage;
@@ -20,11 +21,12 @@ test.describe('Card Payment', () => {
     await mainPage.loginComponent.login(user);
   });
 
-  test('Checking the card payment', { tag: ['@payment'] }, async () => {
+  test('Checking the card payment', { tag: ['@paymentCard'] }, async () => {
     qase.id(11);
+    let userInfo = new CheckoutBuilder().withPaymentMethod('card').build();
     await mainPage.addToCart();
     await mainPage.cartComponent.openCheckout();
-    await mainPage.cartComponent.checkoutComponent.checkout();
+    await mainPage.cartComponent.checkoutComponent.checkout(userInfo);
     await expect(
       mainPage.cartComponent.checkoutComponent.orderModel
     ).toBeHidden();
@@ -64,7 +66,6 @@ test.describe('Login', () => {
 
   test('Login', { tag: ['@login'] }, async () => {
     qase.id(8);
-    // Логинимся под созданным пользователем и проверяем его сгенерированное имя
     await mainPage.loginComponent.login(user);
     await expect(mainPage.userName).toHaveText(user.fullName);
   });
@@ -96,6 +97,37 @@ test.describe('Registration', () => {
       'Registration successful!'
     );
   });
+
+  test('Checkout empty cart', { tag: ['@emptyCheckout'] }, async ({ page }) => {
+    qase.id(6);
+    mainPage = new MainPage(page);
+    page.on('dialog', async (dialog) => {
+      const message = dialog.message();
+      await dialog.accept();
+      expect(message).toContain('Cart is empty!');
+    });
+
+    await mainPage.cartComponent.clickCartIcon();
+    await mainPage.cartComponent.openCheckout();
+  });
+
+  test(
+    'Place an order for delivery items from the cart, payment on delivery',
+    { tag: ['@paymentDelivery'] },
+    async ({ page }) => {
+      qase.id(3);
+      mainPage = new MainPage(page);
+      let userInfo = new CheckoutBuilder()
+        .withPaymentMethod('delivery')
+        .build();
+      await mainPage.addToCart();
+      await mainPage.cartComponent.openCheckout();
+      await mainPage.cartComponent.checkoutComponent.checkout(userInfo);
+      await expect(
+        mainPage.cartComponent.checkoutComponent.orderModel
+      ).toBeHidden();
+    }
+  );
 });
 
 test.describe('UI-tests for BurgerShop', { tag: ['@ui'] }, () => {
@@ -121,6 +153,73 @@ test.describe('UI-tests for BurgerShop', { tag: ['@ui'] }, () => {
       expect(await mainPage.cartComponent.getCaloriesBadge()).toEqual(
         await mainPage.cartComponent.getCaloriesNearPrice()
       );
+    }
+  );
+
+  test(
+    "Delete all items from the cart by button 'x' near each position",
+    { tag: ['@deletingItem'] },
+    async ({ page }) => {
+      qase.id(5);
+      mainPage = new MainPage(page);
+      const cart = mainPage.cartComponent;
+      await mainPage.openPage();
+      await mainPage.addItemToTheCart(0);
+      await mainPage.addItemToTheCart(1);
+      await mainPage.addItemToTheCart(2);
+      const itemArray = await Promise.all(
+        [
+          cart.getItemDetails(0),
+          cart.getItemDetails(1),
+          cart.getItemDetails(2),
+        ].map(async (item) => ({
+          name: await item.name.textContent(),
+          price: await item.price.textContent(),
+        }))
+      );
+      let checkArray;
+      let checkPrice = 0;
+
+      await cart.deleteCartItem(0);
+      itemArray.shift();
+      checkArray = await Promise.all(
+        [cart.getItemDetails(0), cart.getItemDetails(1)].map(async (item) => ({
+          name: await item.name.textContent(),
+          price: await item.price.textContent(),
+        }))
+      );
+      let totalPrice = await cart.getTotalPrice();
+      for (let item of checkArray) {
+        checkPrice += +item.price.replace(',', '.').replace(/[^0-9.-]/g, '');
+      }
+      await expect(cart.cartCounter).toHaveText('2');
+      expect(itemArray).toEqual(checkArray);
+      expect(totalPrice).toEqual(checkPrice);
+
+      await cart.deleteCartItem(0);
+      itemArray.shift();
+      checkArray = await Promise.all(
+        [cart.getItemDetails(0)].map(async (item) => ({
+          name: await item.name.textContent(),
+          price: await item.price.textContent(),
+        }))
+      );
+      totalPrice = await cart.getTotalPrice();
+      checkPrice = 0;
+      for (let item of checkArray) {
+        checkPrice += +item.price.replace(',', '.').replace(/[^0-9.-]/g, '');
+      }
+      await expect(cart.cartCounter).toHaveText('1');
+      expect(itemArray).toEqual(expect.arrayContaining(checkArray));
+      expect(totalPrice).toEqual(checkPrice);
+
+      await cart.deleteCartItem(0);
+      itemArray.shift();
+      totalPrice = await cart.getTotalPrice();
+      await expect(cart.cartCounter).toHaveText('0');
+      expect(itemArray).toEqual([]);
+      await expect(cart.emptyCaption).toHaveText('Your cart is empty');
+      expect(totalPrice).toEqual(0);
     }
   );
 
