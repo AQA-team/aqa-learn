@@ -16,11 +16,11 @@ test.describe('Card Payment', () => {
     await mainPage.loginComponent.login();
   });
 
-  test('Checking the card payment', { tag: ['@payment'] }, async () => {
+  test('Checking the card payment', { tag: ['@paymentCard'] }, async () => {
     qase.id(11);
     await mainPage.addToCart();
     await mainPage.cartComponent.openCheckout();
-    await mainPage.cartComponent.checkoutComponent.checkout();
+    await mainPage.cartComponent.checkoutComponent.checkout('card');
     await expect(
       mainPage.cartComponent.checkoutComponent.orderModel
     ).toBeHidden();
@@ -37,6 +37,20 @@ test.describe('Card Payment', () => {
     await mainPage.cartComponent.clickCartIcon();
     await mainPage.cartComponent.openCheckout();
   });
+
+  test(
+    'Place an order for delivery items from the cart, payment on delivery',
+    { tag: ['@paymentDelivery'] },
+    async () => {
+      qase.id(3);
+      await mainPage.addToCart();
+      await mainPage.cartComponent.openCheckout();
+      await mainPage.cartComponent.checkoutComponent.checkout('delivery');
+      await expect(
+        mainPage.cartComponent.checkoutComponent.orderModel
+      ).toBeHidden();
+    }
+  );
 });
 
 test.describe('UI-tests for BurgerShop', { tag: ['@ui'] }, () => {
