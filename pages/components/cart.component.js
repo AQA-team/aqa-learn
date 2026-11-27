@@ -1,4 +1,4 @@
-import { CheckoutComponent } from './checkout.component';
+import { CheckoutComponent } from './checkout.component.js';
 
 export class CartComponent {
   constructor(page) {
@@ -8,10 +8,12 @@ export class CartComponent {
     this.caloriesNearPrice = page.locator('#cart-calories');
     this.total = page.locator('#cart-total');
     this.caloriesBadge = page.locator('.calorie-badge');
-    this.checkoutBtn = page.locator('//*[@id="checkout-btn"]');
+    this.checkoutBtn = page.locator('#checkout-btn');
     this.cartItems = page.locator('#cart-items .cart-item');
     this.checkoutComponent = new CheckoutComponent(page);
     this.cartCounter = page.locator('#cart-count');
+    this.emptyCaption = page.locator('.empty-cart');
+    this.cartSection = page.locator('#cart-overlay');
   }
 
   async getCaloriesNearPrice() {
@@ -45,6 +47,12 @@ export class CartComponent {
 
   async openCheckout() {
     await this.checkoutBtn.click();
+  }
+
+  async deleteCartItem(index) {
+    const item = this.cartItems.nth(index);
+    const deleteBtn = item.locator('.cart-item-remove');
+    await deleteBtn.click();
   }
 
   getItemDetails(index = 0) {

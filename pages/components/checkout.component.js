@@ -5,20 +5,20 @@ export class CheckoutComponent {
     this.phoneField = page.locator('//*[@id="phone"]');
     this.addressField = page.locator('//*[@id="address"]');
     this.placeOrderBtn = page.locator('//*[@class="btn btn-primary w-100"]');
-    this.cashRadioBtn = page.locator('//*[@id="cash"]');
+    this.deliveryRadioBtn = page.locator('//*[@id="cash"]');
     this.cardRadioBtn = page.locator('//*[@id="card"]');
     this.orderModel = page.locator('//*[@id="order-frame"]');
   }
 
-  async checkout(
-    name = 'Bogdan',
-    phone = '1234567890',
-    address = '123 Main St'
-  ) {
-    await this.nameField.fill(name);
-    await this.phoneField.fill(phone);
-    await this.addressField.fill(address);
-    await this.cardRadioBtn.check();
+  async checkout(info) {
+    await this.nameField.fill(info.name);
+    await this.phoneField.fill(info.phone);
+    await this.addressField.fill(info.address);
+    if (info.paymentMethod === 'delivery') {
+      await this.deliveryRadioBtn.check();
+    } else if (info.paymentMethod === 'card') {
+      await this.cardRadioBtn.check();
+    }
     await this.placeOrderBtn.click();
   }
 }
