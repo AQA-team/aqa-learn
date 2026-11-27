@@ -1,6 +1,7 @@
 import { CartComponent } from './components/cart.component.js';
 import { LoginComponent } from './components/login.component.js';
 import { RegisterComponent } from './components/register.component.js';
+import { HeaderComponent } from './components/header.component.js';
 
 export class BasePage {
   constructor(page) {
@@ -9,6 +10,7 @@ export class BasePage {
     this.loginComponent = new LoginComponent(page);
     this.registerComponent = new RegisterComponent(page);
     this.cartComponent = new CartComponent(page);
+    this.headerComponent = new HeaderComponent(page);
   }
 
   async openPage(path = '/') {

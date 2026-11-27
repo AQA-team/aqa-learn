@@ -8,7 +8,7 @@ test.describe('Card Payment', () => {
   test.beforeEach('Authorization', async ({ page }) => {
     mainPage = new MainPage(page);
     await mainPage.openPage();
-    await mainPage.registerComponent.startRegister();
+    await mainPage.headerComponent.startRegister();
     await mainPage.registerComponent.registration();
     await expect(mainPage.registerComponent.registerStatus).toHaveText(
       'Registration successful!'

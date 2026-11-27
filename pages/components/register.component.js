@@ -6,11 +6,6 @@ export class RegisterComponent {
     this.passwordField = page.locator('//*[@id="register-password"]');
     this.registerSubmit = page.locator('//*[@id="register-submit"]');
     this.registerStatus = page.locator('//*[@id="register-success"]');
-    this.registerBtn = page.locator('#register-btn');
-  }
-
-  async startRegister() {
-    await this.registerBtn.click();
   }
 
   async registration(
