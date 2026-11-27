@@ -1,19 +1,23 @@
 import { test, expect } from '@playwright/test';
 import { MainPage } from '../pages/main.page';
+import { UserFactory } from './factories/user.factory';
 import { qase } from 'playwright-qase-reporter';
 
 test.describe('Card Payment', () => {
   let mainPage;
+  let user;
 
   test.beforeEach('Authorization', async ({ page }) => {
     mainPage = new MainPage(page);
+    user = UserFactory.createUser();
+
     await mainPage.openPage();
     await mainPage.registerComponent.startRegister();
-    await mainPage.registerComponent.registration();
+    await mainPage.registerComponent.registration(user);
     await expect(mainPage.registerComponent.registerStatus).toHaveText(
       'Registration successful!'
     );
-    await mainPage.loginComponent.login();
+    await mainPage.loginComponent.login(user);
   });
 
   test('Checking the card payment', { tag: ['@payment'] }, async () => {
@@ -43,31 +47,33 @@ test.describe('Card Payment', () => {
 
 test.describe('Login', () => {
   let mainPage;
+  let user;
 
   test.beforeEach('Registration', async ({ page }) => {
     mainPage = new MainPage(page);
+    user = UserFactory.createUser(); // Генерируем пользователя для тестов логина
+
     await mainPage.openPage();
     await mainPage.registerComponent.startRegister();
-    await mainPage.registerComponent.registration();
+    await mainPage.registerComponent.registration(user); // Передаем user
     await expect(mainPage.registerComponent.registerStatus).toHaveText(
       'Registration successful!'
     );
   });
 
-  test('Login', { tag: ['@login'] }, async ({ page }) => {
+  test('Login', { tag: ['@login'] }, async () => {
     qase.id(8);
-    mainPage = new MainPage(page);
-    await mainPage.loginComponent.login();
-    await expect(mainPage.userName).toHaveText('Bogdan');
+    // Логинимся под созданным пользователем и проверяем его сгенерированное имя
+    await mainPage.loginComponent.login(user);
+    await expect(mainPage.userName).toHaveText(user.fullName);
   });
 
   test(
     'Login with invalid credentials',
     { tag: ['@loginInvalid'] },
-    async ({ page }) => {
+    async () => {
       qase.id(19);
-      mainPage = new MainPage(page);
-      await mainPage.loginComponent.login(undefined, 'wrongpassword');
+      await mainPage.loginComponent.login(user, 'wrongpassword');
       await expect(mainPage.loginComponent.loginStatus).toHaveText(
         'Invalid email or password'
       );

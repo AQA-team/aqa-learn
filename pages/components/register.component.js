@@ -13,14 +13,10 @@ export class RegisterComponent {
     await this.registerBtn.click();
   }
 
-  async registration(
-    fullname = 'Bogdan',
-    email = 'test@gmail.com',
-    password = '123456'
-  ) {
-    await this.fullNameField.fill(fullname);
-    await this.emailField.fill(email);
-    await this.passwordField.fill(password);
+  async registration(user) {
+    await this.fullNameField.fill(user.fullName);
+    await this.emailField.fill(user.email);
+    await this.passwordField.fill(user.password);
     await this.registerSubmit.click();
   }
 }
