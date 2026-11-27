@@ -25,6 +25,18 @@ test.describe('Card Payment', () => {
       mainPage.cartComponent.checkoutComponent.orderModel
     ).toBeHidden();
   });
+
+  test('Checkout empty cart', { tag: ['@emptyCheckout'] }, async ({ page }) => {
+    qase.id(6);
+    page.on('dialog', async (dialog) => {
+      const message = dialog.message();
+      await dialog.accept();
+      expect(message).toContain('Cart is empty!');
+    });
+
+    await mainPage.cartComponent.clickCartIcon();
+    await mainPage.cartComponent.openCheckout();
+  });
 });
 
 test.describe('UI-tests for BurgerShop', { tag: ['@ui'] }, () => {
