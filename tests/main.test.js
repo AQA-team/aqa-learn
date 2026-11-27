@@ -48,6 +48,7 @@ test.describe('Card Payment', () => {
 test.describe('Login', () => {
   let mainPage;
   let user;
+  let wrongUser;
 
   test.beforeEach('Registration', async ({ page }) => {
     mainPage = new MainPage(page);
@@ -73,7 +74,8 @@ test.describe('Login', () => {
     { tag: ['@loginInvalid'] },
     async () => {
       qase.id(19);
-      await mainPage.loginComponent.login(user, 'wrongpassword');
+      wrongUser = UserFactory.createUserWithWrongPassword();
+      await mainPage.loginComponent.login(wrongUser);
       await expect(mainPage.loginComponent.loginStatus).toHaveText(
         'Invalid email or password'
       );

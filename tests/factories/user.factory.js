@@ -14,4 +14,13 @@ export class UserFactory {
 
     return { ...defaultUser, ...overrides };
   }
+
+  static createUserWithWrongPassword(overrides = {}) {
+    const user = this.createUser(overrides);
+
+    return {
+      ...user,
+      password: `${user.password}_wrong`,
+    };
+  }
 }
