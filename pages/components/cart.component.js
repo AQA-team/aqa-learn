@@ -13,6 +13,7 @@ export class CartComponent {
     this.checkoutComponent = new CheckoutComponent(page);
     this.cartCounter = page.locator('#cart-count');
     this.emptyCaption = page.locator('.empty-cart');
+    this.cartSection = page.locator('#cart-overlay');
   }
 
   async getCaloriesNearPrice() {

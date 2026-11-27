@@ -155,4 +155,40 @@ test.describe('UI-tests for BurgerShop', { tag: ['@ui'] }, () => {
       await expect.poll(() => cart.getTotalPrice()).toBe(price);
     }
   );
+
+  test(
+    'Add 1 item from the sauces category to the cart with an item',
+    { tag: ['@addingItem'] },
+    async ({ page }) => {
+      qase.id(3);
+      mainPage = new MainPage(page);
+      const cart = mainPage.cartComponent;
+
+      await mainPage.openPage();
+      await expect(cart.cartCounter).toHaveText('0');
+
+      const firstCard = mainPage.productList.first();
+      const { name, price, calories } =
+        await mainPage.getProductDetails(firstCard);
+
+      const addedItem = await mainPage.addItemToTheCart(0);
+
+      await expect(cart.cartCounter).toHaveText('1');
+      await expect(cart.cartItems).toHaveCount(1);
+
+      const item = cart.getItemDetails();
+
+      await expect(item.name).toBeVisible();
+      await expect(item.name).toHaveText(name);
+      await expect(item.price).toHaveText(price);
+      await expect(item.calories).toHaveText(calories);
+      await expect(item.quantity).toHaveText('1');
+
+      await expect
+        .poll(() => cart.getCaloriesNearPrice())
+        .toBe(addedItem.calories);
+
+      await expect.poll(() => cart.getTotalPrice()).toBe(price);
+    }
+  );
 });
