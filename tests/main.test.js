@@ -25,12 +25,26 @@ test.describe('Card Payment', () => {
       mainPage.cartComponent.checkoutComponent.orderModel
     ).toBeHidden();
   });
+
+  test('Close checkout page', { tag: ['@closeCheckout'] }, async () => {
+    qase.id(9);
+    await mainPage.addToCart();
+    await mainPage.cartComponent.openCheckout();
+    await mainPage.cartComponent.checkoutComponent.checkout();
+    await expect(
+      mainPage.cartComponent.checkoutComponent.closeCheckoutBtn
+    ).toHaveRole('button');
+    await mainPage.cartComponent.checkoutComponent.closeCheckout();
+    await expect(
+      mainPage.cartComponent.checkoutComponent.orderModel
+    ).toBeHidden();
+  });
 });
 
 test.describe('Login', () => {
   let mainPage;
 
-  test.beforeEach('Authorization', async ({ page }) => {
+  test.beforeEach('Registration', async ({ page }) => {
     mainPage = new MainPage(page);
     await mainPage.openPage();
     await mainPage.registerComponent.startRegister();
@@ -45,6 +59,34 @@ test.describe('Login', () => {
     mainPage = new MainPage(page);
     await mainPage.loginComponent.login();
     await expect(mainPage.userName).toHaveText('Bogdan');
+  });
+
+  test(
+    'Login with invalid credentials',
+    { tag: ['@loginInvalid'] },
+    async ({ page }) => {
+      qase.id(19);
+      mainPage = new MainPage(page);
+      await mainPage.loginComponent.login(undefined, 'wrongpassword');
+      await expect(mainPage.loginComponent.loginStatus).toHaveText(
+        'Invalid email or password'
+      );
+    }
+  );
+});
+
+test.describe('Registration', () => {
+  let mainPage;
+
+  test('Registration', { tag: ['@registration'] }, async ({ page }) => {
+    qase.id(10);
+    mainPage = new MainPage(page);
+    await mainPage.openPage();
+    await mainPage.registerComponent.startRegister();
+    await mainPage.registerComponent.registration();
+    await expect(mainPage.registerComponent.registerStatus).toHaveText(
+      'Registration successful!'
+    );
   });
 });
 
