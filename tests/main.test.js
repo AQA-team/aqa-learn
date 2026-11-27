@@ -54,6 +54,73 @@ test.describe('UI-tests for BurgerShop', { tag: ['@ui'] }, () => {
   );
 
   test(
+    "Delete all items from the cart by button 'x' near each position",
+    { tag: ['@deletingItem'] },
+    async ({ page }) => {
+      qase.id(5);
+      mainPage = new MainPage(page);
+      const cart = mainPage.cartComponent;
+      await mainPage.openPage();
+      await mainPage.addItemToTheCart(0);
+      await mainPage.addItemToTheCart(1);
+      await mainPage.addItemToTheCart(2);
+      const itemArray = await Promise.all(
+        [
+          cart.getItemDetails(0),
+          cart.getItemDetails(1),
+          cart.getItemDetails(2),
+        ].map(async (item) => ({
+          name: await item.name.textContent(),
+          price: await item.price.textContent(),
+        }))
+      );
+      let checkArray;
+      let checkPrice = 0;
+
+      await cart.deleteCartItem(0);
+      itemArray.shift();
+      checkArray = await Promise.all(
+        [cart.getItemDetails(0), cart.getItemDetails(1)].map(async (item) => ({
+          name: await item.name.textContent(),
+          price: await item.price.textContent(),
+        }))
+      );
+      let totalPrice = await cart.getTotalPrice();
+      for (let item of checkArray) {
+        checkPrice += +item.price.replace(',', '.').replace(/[^0-9.-]/g, '');
+      }
+      await expect(cart.cartCounter).toHaveText('2');
+      expect(itemArray).toEqual(checkArray);
+      expect(totalPrice).toEqual(checkPrice);
+
+      await cart.deleteCartItem(0);
+      itemArray.shift();
+      checkArray = await Promise.all(
+        [cart.getItemDetails(0)].map(async (item) => ({
+          name: await item.name.textContent(),
+          price: await item.price.textContent(),
+        }))
+      );
+      totalPrice = await cart.getTotalPrice();
+      checkPrice = 0;
+      for (let item of checkArray) {
+        checkPrice += +item.price.replace(',', '.').replace(/[^0-9.-]/g, '');
+      }
+      await expect(cart.cartCounter).toHaveText('1');
+      expect(itemArray).toEqual(expect.arrayContaining(checkArray));
+      expect(totalPrice).toEqual(checkPrice);
+
+      await cart.deleteCartItem(0);
+      itemArray.shift();
+      totalPrice = await cart.getTotalPrice();
+      await expect(cart.cartCounter).toHaveText('0');
+      expect(itemArray).toEqual([]);
+      await expect(cart.emptyCaption).toHaveText('Your cart is empty');
+      expect(totalPrice).toEqual(0);
+    }
+  );
+
+  test(
     'Add a single item to the cart',
     { tag: ['@addingItem'] },
     async ({ page }) => {
