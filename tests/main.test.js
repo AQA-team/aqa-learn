@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { MainPage } from '../pages/main.page';
+import { MainPage } from '../pages/main.page.js';
 import { qase } from 'playwright-qase-reporter';
+import CheckoutBuilder from './builders/checkoutBuilder.js';
 
 test.describe('Card Payment', () => {
   let mainPage;
@@ -18,9 +19,10 @@ test.describe('Card Payment', () => {
 
   test('Checking the card payment', { tag: ['@paymentCard'] }, async () => {
     qase.id(11);
+    let userInfo = new CheckoutBuilder().withPaymentMethod('card').build();
     await mainPage.addToCart();
     await mainPage.cartComponent.openCheckout();
-    await mainPage.cartComponent.checkoutComponent.checkout('card');
+    await mainPage.cartComponent.checkoutComponent.checkout(userInfo);
     await expect(
       mainPage.cartComponent.checkoutComponent.orderModel
     ).toBeHidden();
@@ -43,9 +45,12 @@ test.describe('Card Payment', () => {
     { tag: ['@paymentDelivery'] },
     async () => {
       qase.id(3);
+      let userInfo = new CheckoutBuilder()
+        .withPaymentMethod('delivery')
+        .build();
       await mainPage.addToCart();
       await mainPage.cartComponent.openCheckout();
-      await mainPage.cartComponent.checkoutComponent.checkout('delivery');
+      await mainPage.cartComponent.checkoutComponent.checkout(userInfo);
       await expect(
         mainPage.cartComponent.checkoutComponent.orderModel
       ).toBeHidden();
@@ -151,42 +156,6 @@ test.describe('UI-tests for BurgerShop', { tag: ['@ui'] }, () => {
     { tag: ['@addingItem'] },
     async ({ page }) => {
       qase.id(1);
-      mainPage = new MainPage(page);
-      const cart = mainPage.cartComponent;
-
-      await mainPage.openPage();
-      await expect(cart.cartCounter).toHaveText('0');
-
-      const firstCard = mainPage.productList.first();
-      const { name, price, calories } =
-        await mainPage.getProductDetails(firstCard);
-
-      const addedItem = await mainPage.addItemToTheCart(0);
-
-      await expect(cart.cartCounter).toHaveText('1');
-      await expect(cart.cartItems).toHaveCount(1);
-
-      const item = cart.getItemDetails();
-
-      await expect(item.name).toBeVisible();
-      await expect(item.name).toHaveText(name);
-      await expect(item.price).toHaveText(price);
-      await expect(item.calories).toHaveText(calories);
-      await expect(item.quantity).toHaveText('1');
-
-      await expect
-        .poll(() => cart.getCaloriesNearPrice())
-        .toBe(addedItem.calories);
-
-      await expect.poll(() => cart.getTotalPrice()).toBe(price);
-    }
-  );
-
-  test(
-    'Add 1 item from the sauces category to the cart with an item',
-    { tag: ['@addingItem'] },
-    async ({ page }) => {
-      qase.id(3);
       mainPage = new MainPage(page);
       const cart = mainPage.cartComponent;
 

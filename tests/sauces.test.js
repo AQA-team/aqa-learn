@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { MainPage } from '../pages/main.page';
-import { SaucesPage } from '../pages/sauces.page';
+import { MainPage } from '../pages/main.page.js';
+import { SaucesPage } from '../pages/sauces.page.js';
 import { qase } from 'playwright-qase-reporter';
 
 test.describe('UI tests for sauces', () => {

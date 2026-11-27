@@ -10,18 +10,13 @@ export class CheckoutComponent {
     this.orderModel = page.locator('//*[@id="order-frame"]');
   }
 
-  async checkout(
-    paymentMethod = 'card',
-    name = 'Bogdan',
-    phone = '1234567890',
-    address = '123 Main St'
-  ) {
-    await this.nameField.fill(name);
-    await this.phoneField.fill(phone);
-    await this.addressField.fill(address);
-    if (paymentMethod === 'delivery') {
+  async checkout(info) {
+    await this.nameField.fill(info.name);
+    await this.phoneField.fill(info.phone);
+    await this.addressField.fill(info.address);
+    if (info.paymentMethod === 'delivery') {
       await this.deliveryRadioBtn.check();
-    } else if (paymentMethod === 'card') {
+    } else if (info.paymentMethod === 'card') {
       await this.cardRadioBtn.check();
     }
     await this.placeOrderBtn.click();

@@ -1,4 +1,4 @@
-import { CheckoutComponent } from './checkout.component';
+import { CheckoutComponent } from './checkout.component.js';
 
 export class CartComponent {
   constructor(page) {
